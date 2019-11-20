@@ -5,6 +5,7 @@ namespace Ltsochev\CustomerChat\Middleware;
 use Error;
 use Closure;
 use Exception;
+use Illuminate\Http\Request;
 use Ltsochev\CustomerChat\CustomerChat;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Debug\ExceptionHandler;
@@ -12,11 +13,33 @@ use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class AutoInjectMiddleware
 {
+    /**
+     * Instance of customer chat library
+     *
+     * @var \Ltsochev\CustomerChat\CustomerChat
+     */
     private $chatLib;
+
+    /**
+     * App container instance
+     *
+     * @var \Illuminate\Contracts\Container\Container
+     */
     private $container;
 
+    /**
+     * The URIs that should be excluded from auto injection
+     *
+     * @var array
+     */
     protected $except = [];
 
+    /**
+     * Create a new middleware instance.
+     *
+     * @param \Illuminate\Contracts\Container\Container $container
+     * @param \Ltsochev\CustomerChat\CustomerChat $chatLib
+     */
     public function __construct(Container $container, CustomerChat $chatLib)
     {
         $this->container = $container;
@@ -24,6 +47,13 @@ class AutoInjectMiddleware
         $this->except = config('customerchat.except') ?: [];
     }
 
+    /**
+     * Handle an incoming request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
+     * @return mixed
+     */
     public function handle($request, Closure $next)
     {
         if (!$this->chatLib->enabled() || $this->inExceptArray($request)) {
@@ -67,6 +97,11 @@ class AutoInjectMiddleware
         return $handler->render($passable, $e);
     }
 
+    /**
+     * Determine if the request has a URI that should be ignored.
+     *
+     * (Copy from Barryvdh\Debugbar\Middleware\InjectDebugbar by Barryvdh)
+     */
     protected function inExceptArray($request)
     {
         foreach ($this->except as $except) {

@@ -40,6 +40,11 @@ class CustomerChatServiceProvider extends ServiceProvider
         $this->registerMiddleware();
     }
 
+    /**
+     * Registers the auto inject middleware
+     *
+     * @return void
+     */
     private function registerMiddleware()
     {
         if ($this->app['config']['customerchat']['enabled'] &&
