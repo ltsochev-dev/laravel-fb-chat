@@ -51,7 +51,7 @@ class CustomerChatServiceProvider extends ServiceProvider
         if ($this->app['config']['customerchat']['enabled'] &&
             $this->app['config']['customerchat']['autoinject']) {
                 $router = $this->app['router'];
-                $router->pushMiddlewareToGroup('web', Ltsochev\CustomerChat\Middleware\AutoInjectMiddleware::class);
+                $router->pushMiddlewareToGroup('web', \Ltsochev\CustomerChat\Middleware\AutoInjectMiddleware::class);
             }
     }
 }
