@@ -105,13 +105,23 @@ class CustomerChat
     }
 
     /**
+     * Disables the customer chat plugin
+     *
+     * @return void
+     */
+    public function disable()
+    {
+        $this->enabled = false;
+    }
+
+    /**
      * Retrieves Laravel's view for the customer chat
      *
      * @return \Illuminate\View\View
      */
     public function getView()
     {
-        if ($this->pageId == 0 || empty($this->pageId)) {
+        if ($this->pageId === 0 || empty($this->pageId)) {
             throw new \RuntimeException("You need a valid Facebook Page ID in order to use the customer chat plugin!");
         }
 
@@ -121,6 +131,7 @@ class CustomerChat
         }
 
         return $this->viewFactory->make($this->view, [
+            'appId' => $this->appId,
             'pageId' => $this->pageId,
             'injectSdk' => $this->injectSdk,
             'locale' => $this->fbLocale,

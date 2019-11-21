@@ -31,11 +31,12 @@ class CustomerChatServiceProvider extends ServiceProvider
             __DIR__ . '/../config/config.php', 'customerchat'
         );
 
-        $this->app->register('customer-chat', function($app) {
+        $this->app->bind('customer-chat', function($app) {
             $config = $app['config']['customerchat'];
 
             return new CustomerChat($app['view'], $config);
         });
+
 
         $this->registerMiddleware();
     }
