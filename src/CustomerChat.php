@@ -250,7 +250,7 @@ class CustomerChat
      */
     private function getValidAttributes()
     {
-        return array_filter($this->pluginSettings, function($key, $value) {
+        return array_filter($this->pluginSettings, function($value, $key) {
             return !empty($value);
         }, ARRAY_FILTER_USE_BOTH);
     }
