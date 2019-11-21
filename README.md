@@ -26,4 +26,17 @@ php artisan vendor:publish
 
 Once the configurations are extracted you can edit the settings in your `config/customerchat.php` file
 
+Once you are done with the settings you should add the service provider in your `config/app.php` file like so:
+
+```php
+<?php 
+
+    'providers' => [
+        ...
+        Ltsochev\CustomerChat\CustomerChatServiceProvider::class,
+        ...
+    ]
+
+```
+
 By default the wrapper uses an auto-inject technique so you should be able to see the Facebook chat plugin immediately. 
